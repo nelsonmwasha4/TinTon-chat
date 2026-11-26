@@ -86,53 +86,56 @@ export default function Profile() {
           <div><b>5.4K</b> <span className="text-gray-500 text-sm">Likes ❤️</span></div>
         </div>
 
-        {/* WALLET NDANI YA PROFILE - BON YEZA KUFUNGUA */}
-        <button onClick={() => setShowWallet(!showWallet)} className="w-full bg-gray-50 rounded-2xl p-3 mt-4 text-left">
-          <div className="flex justify-between items-center">
-            <span className="font-bold">⭐ Level 5 - Mzalendo</span>
-            <span className="font-bold text-yellow-600">🪙 12 Coins • TSh 2,400 {showWallet ? '▲' : '▼'}</span>
-          </div>
-          <div className="h-2 bg-gray-200 rounded-full mt-2 overflow-hidden"><div className="h-full bg-green-500 w-[65%]"></div></div>
-          <p className="text-xs text-gray-500 mt-1">Bonyeza hapa kuona Wallet yako 👆</p>
-        </button>
+        {/* WALLET NDANI YA PROFILE - INAONEKANA KAMA PICHA */}
+{showWallet && (
+  <div className="mt-2">
+    {/* BALANCE - Kama kwenye picha */}
+    <div className="bg-black text-white rounded-2xl p-5 text-center">
+      <p className="text-white/90">Your Balance</p>
+      <p className="text-4xl font-bold mt-1">TSh 2,400</p>
+      <p className="mt-2 text-white/90">12 Coins • 1 Coin = TSh 200</p>
+      <p className="text-sm mt-1">🇹🇿 Tanzania Tu • M-Pesa / Tigo / Airtel / HaloPesa</p>
+    </div>
 
-        {/* WALLET INAFUNGUKA HAPA HAPA */}
-        {showWallet && (
-          <div className="bg-black text-white rounded-2xl p-4 mt-2">
-            <p className="text-sm text-gray-300">Salio Lako</p>
-            <p className="text-3xl font-bold">TSh 2,400</p>
-            <p className="text-xs text-yellow-400 mt-1">12 Coins • 1 Coin = TSh 200</p>
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 bg-green-500 py-2.5 rounded-full font-bold">+ Nunua Coins</button>
-              <button className="flex-1 bg-white text-black py-2.5 rounded-full font-bold">Toa Pesa</button>
-            </div>
-            <div className="mt-4 space-y-2">
-              <p className="font-bold text-sm">Miamala Yangu</p>
-              <div className="flex justify-between bg-white/10 p-2 rounded-lg text-sm"><span>✅ Ulipokea - M-Pesa</span><b className="text-green-400">+TSh 2,000</b></div>
-              <div className="flex justify-between bg-white/10 p-2 rounded-lg text-sm"><span>🎁 Zawadi - Live Neema</span><b className="text-red-400">-TSh 400</b></div>
-              <div className="flex justify-between bg-white/10 p-2 rounded-lg text-sm"><span>✅ Ulipokea - Tigo Pesa</span><b className="text-green-400">+TSh 1,000</b></div>
-            </div>
-            <p className="text-center text-xs text-gray-400 mt-3">M-Pesa • Tigo • Airtel • HaloPesa</p>
-          </div>
-        )}
+    {/* WITHDRAW */}
+    <h3 className="font-bold text-lg mt-5">Withdraw</h3>
+    <button className="w-full bg-gray-300 text-white font-bold py-3 rounded-xl mt-2">
+      Fikisha TSh 5,000 Kwanza (2,400 / 5,000)
+    </button>
 
-        {/* BADGES */}
-        <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
-          <span className="bg-yellow-100 px-3 py-1 rounded-full text-xs">🏆 Mwanzo Mpya</span>
-          <span className="bg-red-100 px-3 py-1 rounded-full text-xs">🔥 Active 7 Siku</span>
-          <span className="bg-green-100 px-3 py-1 rounded-full text-xs">💎 Mzalendo wa TZ</span>
-        </div>
+    {/* TRANSACTIONS - HAPA NDIPO TULIPOREKEBISHA */}
+    <h3 className="font-bold text-lg mt-5">My Transactions</h3>
+    <div className="space-y-2 mt-2">
+      <div className="flex justify-between items-center bg-white border rounded-xl p-3 shadow-sm">
+        <div><p className="font-bold">Rewards - Ads 25</p><p className="text-xs text-gray-500">Leo</p></div>
+        <span className="text-green-500 font-bold">+ TSh 200</span>
+      </div>
 
-        {/* TABS */}
-        <div className="flex border-b mt-5">
-          <button onClick={()=>setTab('posts')} className={`flex-1 py-3 font-bold ${tab==='posts'?'border-b-2 border-green-600':''}`}>Machapisho</button>
-          <button onClick={()=>setTab('liked')} className={`flex-1 py-3 font-bold ${tab==='liked'?'border-b-2 border-green-600':''}`}>Nimependa ❤️</button>
-          <button onClick={()=>setTab('live')} className={`flex-1 py-3 font-bold ${tab==='live'?'border-b-2 border-green-600':''}`}>Live 🎥</button>
-        </div>
-        {tab==='posts' && <div className="grid grid-cols-3 gap-1 mt-2"><div className="aspect-square bg-green-100 rounded-lg flex items-center justify-center text-3xl">🎨</div><div className="aspect-square bg-yellow-100 rounded-lg flex items-center justify-center text-3xl">🇹🇿</div><div className="aspect-square bg-blue-100 rounded-lg flex items-center justify-center text-3xl">📸</div></div>}
-        {tab==='liked' && <p className="text-center py-8 text-gray-500">Hujapenda chochote bado ❤️</p>}
-        {tab==='live' && <p className="text-center py-8 text-gray-500">Hujafanya Live bado 🎥</p>}
+      {/* ✅ IMEKEREBISHWA: 5 Points SIO 50 */}
+      <div className="flex justify-between items-center bg-white border rounded-xl p-3 shadow-sm">
+        <div><p className="font-bold">Daily Login</p><p className="text-xs text-gray-500">Jana</p></div>
+        <span className="text-green-500 font-bold">+5 Points</span>
+      </div>
+
+      <div className="flex justify-between items-center bg-white border rounded-xl p-3 shadow-sm">
+        <div><p className="font-bold">Kutoa - M-Pesa 076XXXXXXX</p><p className="text-xs text-gray-500">Wiki iliyopita</p></div>
+        <span className="text-red-500 font-bold">- TSh 5,000</span>
       </div>
     </div>
-  )
-  }
+
+    {/* BUY COINS */}
+    <h3 className="font-bold text-lg mt-5">Buy Coins</h3>
+    <div className="flex justify-between items-center bg-white border rounded-xl p-3 shadow-sm mt-2">
+      <p className="font-bold">5 Coins</p>
+      <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm">TZS 1,000</button>
+    </div>
+    <div className="flex justify-between items-center bg-white border rounded-xl p-3 shadow-sm mt-2">
+      <p className="font-bold">10 Coins</p>
+      <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm">TZS 2,000</button>
+    </div>
+    <div className="flex justify-between items-center bg-white border rounded-xl p-3 shadow-sm mt-2">
+      <p className="font-bold">25 Coins ⭐ Maarufu</p>
+      <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm">TZS 5,000</button>
+    </div>
+  </div>
+)}
