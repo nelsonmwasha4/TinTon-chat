@@ -1,12 +1,102 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sw">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TinTon Hub - Chat, Live & Coins</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TinTon - Chat Tanzania</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#0f0f1a;color:white;height:100vh;display:flex;flex-direction:column}
+header{background:#1a1a2e;padding:15px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #e91e63}
+.logo{font-size:22px;font-weight:900;color:#e91e63} .logo span{color:white}
+#login{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#1a1a2e;padding:30px;border-radius:20px;width:100%;max-width:380px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.card h1{font-size:35px;color:#e91e63} .card p{color:#aaa;margin:10px 0 20px}
+input{width:100%;padding:14px;border-radius:12px;border:none;background:#2a2a3e;color:white;margin-bottom:12px;outline:none;font-size:16px}
+button{width:100%;padding:14px;border:none;border-radius:12px;background:#e91e63;color:white;font-weight:800;font-size:16px;cursor:pointer}
+#chat{display:none;flex:1;flex-direction:column}
+#messages{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px}
+.msg{background:#2a2a3e;padding:10px 14px;border-radius:15px;max-width:80%;align-self:flex-start}
+.msg.me{background:#e91e63;align-self:flex-end}
+.msg b{font-size:13px;color:#ffd166} .msg.me b{color:white}
+.msg small{font-size:10px;opacity:.6;display:block;margin-top:4px}
+#inputBar{display:flex;gap:10px;padding:12px;background:#1a1a2e}
+#inputBar input{margin:0} #inputBar button{width:70px}
+#online{font-size:12px;color:#4caf50}
+</style>
+</head>
+<body>
+<header><div class="logo">Tin<span>Ton</span> 🇹🇿</div><div id="online">● Online</div></header>
+
+<div id="login">
+  <div class="card">
+    <h1>TinTon</h1>
+    <p>Chat ya Watanzania - Haraka, Bure, Bila Usumbufu</p>
+    <input id="nickname" placeholder="Andika jina lako... e.g. Nelson" maxlength="20">
+    <button onclick="join()">INGIA KWENYE CHAT 🚀</button>
+    <p style="font-size:12px;margin-top:15px">Watu 1,200+ wako online sasa</p>
+  </div>
+</div>
+
+<div id="chat">
+  <div id="messages"></div>
+  <div id="inputBar">
+    <input id="msgInput" placeholder="Andika ujumbe..." onkeypress="if(event.key==='Enter')sendMsg()">
+    <button onclick="sendMsg()">Tuma</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDtEomfsTSXw7LSSw6yvPweWsaRB-GWgpQ",
+  authDomain: "tinton-chat.firebaseapp.com",
+  projectId: "tinton-chat",
+  storageBucket: "tinton-chat.firebasestorage.app",
+  messagingSenderId: "689086050223",
+  appId: "1:689086050223:web:ef9f69dc4fa5340353095a",
+  measurementId: "G-9GC9NLZDZ2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+let myName = "";
+
+window.join = () => {
+  const n = document.getElementById('nickname').value.trim();
+  if(!n) return alert('Andika jina kwanza!');
+  myName = n;
+  document.getElementById('login').style.display='none';
+  document.getElementById('chat').style.display='flex';
+  loadMessages();
+}
+
+function loadMessages(){
+  const q = query(collection(db, "messages"), orderBy("time"));
+  onSnapshot(q, (snap)=>{
+    const box = document.getElementById('messages');
+    box.innerHTML='';
+    snap.forEach(d=>{
+      const m = d.data();
+      const div = document.createElement('div');
+      div.className = 'msg' + (m.name===myName ? ' me':'');
+      div.innerHTML = `<b>${m.name}</b>${m.text}<small>${new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'})}</small>`;
+      box.appendChild(div);
+    });
+    box.scrollTop = box.scrollHeight;
+    document.getElementById('online').innerText = '● ' + snap.size + ' ujumbe';
+  });
+}
+
+window.sendMsg = async () => {
+  const inp = document.getElementById('msgInput');
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value='';
+  await addDoc(collection(db, "messages"), { name: myName, text: text, time: serverTimestamp() });
+}
+</script>
+</body>
+  </html>
