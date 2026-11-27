@@ -15,21 +15,22 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
 
       - name: Setup Capacitor App
         run: |
           mkdir -p dist
           cp index.html dist/index.html || true
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core@6.2.2 @capacitor/cli@6.2.2 @capacitor/android@6.2.2
           npx cap init TinTon com.tinton.chat --web-dir=dist || true
           npx cap add android || true
           npx cap sync android
 
       - name: Build APK
         run: |
-          cd android && ./gradlew assembleDebug
+          cd android && ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
