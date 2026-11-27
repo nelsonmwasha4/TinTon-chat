@@ -3,100 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TinTon - Chat Tanzania</title>
+<title>TinTon</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:#0f0f1a;color:white;height:100vh;display:flex;flex-direction:column}
-header{background:#1a1a2e;padding:15px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #e91e63}
-.logo{font-size:22px;font-weight:900;color:#e91e63} .logo span{color:white}
-#login{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{background:#1a1a2e;padding:30px;border-radius:20px;width:100%;max-width:380px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
-.card h1{font-size:35px;color:#e91e63} .card p{color:#aaa;margin:10px 0 20px}
-input{width:100%;padding:14px;border-radius:12px;border:none;background:#2a2a3e;color:white;margin-bottom:12px;outline:none;font-size:16px}
-button{width:100%;padding:14px;border:none;border-radius:12px;background:#e91e63;color:white;font-weight:800;font-size:16px;cursor:pointer}
-#chat{display:none;flex:1;flex-direction:column}
-#messages{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px}
-.msg{background:#2a2a3e;padding:10px 14px;border-radius:15px;max-width:80%;align-self:flex-start}
-.msg.me{background:#e91e63;align-self:flex-end}
-.msg b{font-size:13px;color:#ffd166} .msg.me b{color:white}
-.msg small{font-size:10px;opacity:.6;display:block;margin-top:4px}
-#inputBar{display:flex;gap:10px;padding:12px;background:#1a1a2e}
-#inputBar input{margin:0} #inputBar button{width:70px}
-#online{font-size:12px;color:#4caf50}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#fff;color:#111;padding-bottom:75px}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff;position:sticky;top:0;z-index:10}
+header h1{color:#1a7a3a;font-size:28px}
+.lang{display:flex;background:#eee;border-radius:20px;overflow:hidden}
+.lang button{border:none;padding:7px 14px;font-weight:bold;cursor:pointer;background:transparent}
+.lang button.active{background:#1a7a3a;color:#fff;border-radius:20px}
+.page{display:none;padding:0 16px}
+.page.active{display:block}
+h2{font-size:26px;margin:14px 0;display:flex;justify-content:space-between;align-items:center}
+.btn-green{background:#1a9a4a;color:#fff;border:none;padding:9px 14px;border-radius:20px;font-weight:bold;cursor:pointer}
+.group{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.avatar{width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:bold;flex-shrink:0}
+.g-info{flex:1}
+.g-info b{font-size:17px}
+.g-info p{font-size:13px;color:#666}
+.g-info small{color:#999}
+.online{font-size:12px;color:#666;white-space:nowrap}
+.dot{color:#22c55e}
+.rules{background:#f8f9f5;border-radius:14px;padding:14px;margin:16px 0;font-size:13px;line-height:1.6;color:#444}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:8px 0 6px;z-index:20}
+nav button{background:none;border:none;font-size:12px;color:#666;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button.active{color:#1a7a3a;font-weight:bold}
+nav button span{font-size:20px}
+.card{background:#f8f9f5;border-radius:14px;padding:14px;margin:12px 0}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top:8px;outline:none}
+.btn{width:100%;background:#1a9a4a;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:bold;margin-top:10px;font-size:15px}
+.wallet-box{background:linear-gradient(135deg,#1a7a3a,#25D366);color:#fff;border-radius:16px;padding:18px;margin:12px 0}
+.wallet-box h3{font-size:13px;opacity:.9}
+.wallet-box h1{font-size:32px;margin:6px 0}
+.chat-view{display:none;position:fixed;inset:0;background:#fff;z-index:50;flex-direction:column}
+.chat-view.open{display:flex}
+.chat-head{background:#075E54;color:#fff;padding:12px;display:flex;gap:10px;align-items:center}
+.msgs{flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#ece5dd}
+.msg{max-width:75%;padding:8px 10px;border-radius:10px;font-size:15px;background:#fff}
+.me{background:#dcf8c6;align-self:flex-end}
+.bar{display:flex;padding:8px;gap:8px;background:#fff}
+.bar input{flex:1;background:#f0f0f0;border:none;border-radius:25px;margin:0}
+.send{background:#00a884;border:none;width:48px;height:48px;border-radius:50%;font-size:20px;color:#fff}
+.live-card{border-radius:14px;overflow:hidden;margin:12px 0;border:1px solid #eee}
+.live-card img{width:100%;height:160px;object-fit:cover;background:#ddd}
+.live-card div{padding:10px}
 </style>
 </head>
 <body>
-<header><div class="logo">Tin<span>Ton</span> 🇹🇿</div><div id="online">● Online</div></header>
 
-<div id="login">
-  <div class="card">
-    <h1>TinTon</h1>
-    <p>Chat ya Watanzania - Haraka, Bure, Bila Usumbufu</p>
-    <input id="nickname" placeholder="Andika jina lako... e.g. Nelson" maxlength="20">
-    <button onclick="join()">INGIA KWENYE CHAT 🚀</button>
-    <p style="font-size:12px;margin-top:15px">Watu 1,200+ wako online sasa</p>
-  </div>
+<header>
+<h1>TinTon 🇹🇿</h1>
+<div class="lang"><button class="active" onclick="setLang('SW',this)">SW</button><button onclick="setLang('EN',this)">EN</button></div>
+</header>
+
+<!-- NYUMBANI -->
+<div id="page-home" class="page active">
+<h2>🏠 Nyumbani</h2>
+<div class="card"><b>Karibu TinTon, Nelson! 👋</b><p style="color:#666;font-size:14px;margin-top:6px">Ungana na Watanzania wenzako. Chat, Group, Live - yote sehemu moja.</p><button class="btn" onclick="showPage('group')">Angalia Groups →</button></div>
+<div class="card"><b>🔥 Zinazotrend Leo</b><p style="font-size:14px;margin-top:8px">• Mechi ya Simba leo saa 12<br>• Bei ya Biashara Mwanza<br>• Wajasiriamali wapya 45 online</p></div>
 </div>
 
-<div id="chat">
-  <div id="messages"></div>
-  <div id="inputBar">
-    <input id="msgInput" placeholder="Andika ujumbe..." onkeypress="if(event.key==='Enter')sendMsg()">
-    <button onclick="sendMsg()">Tuma</button>
-  </div>
+<!-- CHAT -->
+<div id="page-chat" class="page">
+<h2>💬 Chat <button class="btn-green">+ Mpya</button></h2>
+<div class="group" onclick="openChat('Mama','👩')"><div class="avatar" style="background:#e91e63">👩</div><div class="g-info"><b>Mama</b><p>Habari mwanangu?</p></div><span class="online">12:30</span></div>
+<div class="group" onclick="openChat('Juma','🧑')"><div class="avatar" style="background:#ff9800">🧑</div><div class="g-info"><b>Juma</b><p>Bro, mechi leo?</p></div><span class="online">11:15</span></div>
+<div class="group" onclick="openChat('Neema','👧')"><div class="avatar" style="background:#9c27b0">👧</div><div class="g-info"><b>Neema</b><p>Nimefika Mwanza</p></div><span class="online">10:02</span></div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- GROUP - KAMA KWENYE PICHA -->
+<div id="page-group" class="page">
+<h2>👥 Groups <button class="btn-green" onclick="createGroup()">+ Unda Group</button></h2>
+<div class="group" onclick="openChat('Wapenzi wa Tinton','W')"><div class="avatar" style="background:#22c55e">W</div><div class="g-info"><b>Wapenzi wa Tinton</b><p>🇹🇿 Neema: Karibu sana...</p><small>245 members</small></div><span class="online"><span class="dot">🟢</span> 32<br>online</span><span>›</span></div>
+<div class="group" onclick="openChat('Biashara Mwanza','B')"><div class="avatar" style="background:#ff9800">B</div><div class="g-info"><b>Biashara Mwanza</b><p>Juma: Bei ya leo...</p><small>120 members</small></div><span class="online"><span class="dot">🟢</span> 18 online</span><span>›</span></div>
+<div class="group" onclick="openChat('Michezo & Burudani','M')"><div class="avatar" style="background:#0f766e">M</div><div class="g-info"><b>Michezo & Burudani</b><p>Baraka: Mechi leo...</p><small>89 members</small></div><span class="online"><span class="dot">🟢</span> 12 online</span><span>›</span></div>
+<div class="group" onclick="openChat('Wajasiriamali TZ','W')"><div class="avatar" style="background:#8b5cf6">W</div><div class="g-info"><b>Wajasiriamali TZ</b><p>Zawadi: Nani ana...</p><small>310 members</small></div><span class="online"><span class="dot">🟢</span> 45 online</span><span>›</span></div>
+<div class="rules"><b>📜 Sheria za Group:</b><br>- Admin anaweza kutoa mtu / kufuta ujumbe<br>- Usitume spam, matusi au picha chafu<br>- Group inaweza kuwa na watu hadi 1,000</div>
+</div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDtEomfsTSXw7LSSw6yvPweWsaRB-GWgpQ",
-  authDomain: "tinton-chat.firebaseapp.com",
-  projectId: "tinton-chat",
-  storageBucket: "tinton-chat.firebasestorage.app",
-  messagingSenderId: "689086050223",
-  appId: "1:689086050223:web:ef9f69dc4fa5340353095a",
-  measurementId: "G-9GC9NLZDZ2"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-let myName = "";
-
-window.join = () => {
-  const n = document.getElementById('nickname').value.trim();
-  if(!n) return alert('Andika jina kwanza!');
-  myName = n;
-  document.getElementById('login').style.display='none';
-  document.getElementById('chat').style.display='flex';
-  loadMessages();
-}
-
-function loadMessages(){
-  const q = query(collection(db, "messages"), orderBy("time"));
-  onSnapshot(q, (snap)=>{
-    const box = document.getElementById('messages');
-    box.innerHTML='';
-    snap.forEach(d=>{
-      const m = d.data();
-      const div = document.createElement('div');
-      div.className = 'msg' + (m.name===myName ? ' me':'');
-      div.innerHTML = `<b>${m.name}</b>${m.text}<small>${new Date().toLocaleTimeString('sw-TZ',{hour:'2-digit',minute:'2-digit'})}</small>`;
-      box.appendChild(div);
-    });
-    box.scrollTop = box.scrollHeight;
-    document.getElementById('online').innerText = '● ' + snap.size + ' ujumbe';
-  });
-}
-
-window.sendMsg = async () => {
-  const inp = document.getElementById('msgInput');
-  const text = inp.value.trim();
-  if(!text) return;
-  inp.value='';
-  await addDoc(collection(db, "messages"), { name: myName, text: text, time: serverTimestamp() });
-}
-</script>
-</body>
-  </html>
+<!-- LIVE -->
+<div id="page-live" class="page">
+<h2>🎥 Live</h2>
+<div class="live-card"><div style="height:160px;background:#ff6b6b;display:flex;align-items:center;justify-content:center;font-size:50px">🎤</div><div><b>🔴 LIVE: Juma - Muziki wa Bongo</b><p style="color:#666;font-size:13px">Watazamaji 234 • Mwanza</p><button class="btn">Jiunge na Live</button></div></div>
+<div class="live-card"><div style="height:160px;background:#4ecdc4;display:flex;align-items:center;justify-content:center;font-size:50px">⚽</div><div><b>🔴 LIVE: Mechi - Simba vs Yanga</b><p style="color:#666;font-size:13px">Watazamaji 1,204</p><button class="btn">Ji
