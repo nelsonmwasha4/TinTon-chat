@@ -19,11 +19,11 @@ jobs:
 
       - name: Setup Capacitor App
         run: |
-          mkdir -p www
-          cp index.html www/index.html || true
+          mkdir -p dist
+          cp index.html dist/index.html || true
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap init TinTon com.tinton.chat --web-dir=www || true
+          npx cap init TinTon com.tinton.chat --web-dir=dist || true
           npx cap add android || true
           npx cap sync android
 
